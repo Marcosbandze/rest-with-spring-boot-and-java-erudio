@@ -1,4 +1,4 @@
-package mz.com.erudio;
+package mz.com.erudio.math;
 
 public class Greeting {
 

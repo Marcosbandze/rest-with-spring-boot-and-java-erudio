@@ -1,10 +1,12 @@
-package mz.com.erudio;
+package mz.com.erudio.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import mz.com.erudio.math.Greeting;
 
 @RestController
 public class GreetingController {
