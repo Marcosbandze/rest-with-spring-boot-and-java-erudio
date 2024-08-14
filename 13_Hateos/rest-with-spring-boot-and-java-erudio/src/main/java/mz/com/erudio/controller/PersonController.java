@@ -2,6 +2,9 @@ package mz.com.erudio.controller;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +32,23 @@ public class PersonController {
 	@GetMapping(
 			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
 	public List<PersonVO> findAll() {
-		return service.findAll();
+		
+		List<PersonVO> persons =  service.findAll();
+		persons
+			.stream()
+			.forEach(p -> p.add(
+					linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()
+				)
+			);
+		return persons;
 	}
 	
 	@GetMapping(value = "/{id}", 
 			produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML  })
 	public PersonVO findById(@PathVariable(value = "id") Long id) {
-		return service.findById(id);
+		PersonVO personVO = service.findById(id);
+		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return personVO;
 	}
 	
 	@PostMapping(value = "/create",
